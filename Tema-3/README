@@ -1,0 +1,218 @@
+				README Tema 3 IOCLA
+					Jorascu Marian Vladut 325CD
+
+
+TASK 1
+
+Functia 8048635 : Aceasta functie este apelata de 2 ori in cadrul 
+executabilului si are 2 argumente un sir de caractere ASCII care pentru inceput
+nu este descifrabil si cel de al doilea parametru este un intreg 
+Functia are 2 variabile locale una auxiliara care joaca rolul de contor
+pentru a monitoriza activitatea sa pentru a se sti cand trebuie parasita 
+functia. Ce-a de a doua joaca rolul de variabila auxiliara.
+Desi la inceput poate parea o functia care nu face un lucru concret,
+are rolul de a decoda sirul primit ca argument si de a obtine sirul
+care este afisat utilizatorului . Cand spun sir ma refer la cele 2 mesaje
+care sunt afisate la ecran atunci cand se ruleaza aplicatia.Modul in care se 
+decodeaza sirul , se bazeaza pe operatia xor intre 
+fiecare caracter in parte si numarul in hexa
+AA , odata decodat este pus la loc caracterul. Primul argument al functiei re
+prezinta dimensiunea sirului (  atat timp se face xor).
+
+
+Functia 08048871 : Aceasta functie apeleaza puts si are rolul de 
+a afisa la ecran sirul proaspat de codat ( primul sir) cel cu "Welcome ...".
+Nu are niciun parametru.
+
+Functia 08048883 : Aceasta functie apeleaza puts si are rolul de
+a afisa la ecrean cel de al doilea sir , care reprezinta de fapt meniul
+In care utilizatorul trebuie sa introduca un nr de la 0 la 5.Nu are niciun
+parametru.
+
+Functia 0804893A : Aceasta este cea in care se citeste de la tastatura 
+un intreg si se verifica daca este valid , daca da se sare la ramura corespunzatoare
+in cadrul unui switch(desigur reprezentat cu instructiunile disponibile assembly).
+Daca numarul nu este valid adica nu este intre 0 si 5 se afiseaza mesajul
+Unknoun option ( se sare la un label corespunzator si se afiseaza cu puts acest
+mesaj) , dupa care se iese din functie 
+si este din nou reapelata ( deoarece apelul functiei pe care o descriu acum ,
+se realizeaza in cadrul unei bucle "for" fara conditie de oprire).Daca ar fi sa
+atribui un nume acestei functii are fi alegere_optiune_meniu. 
+
+Functia in care se intra atunci cand se introduce la tastatura 0
+Functia 08048679  : Este cea in care utilizatorul doreste sa rezolve puzzle
+ul, adica in care a trebuit sa gasim serial key-ul.Functia nu are paremetri.
+Numele pe care i l-as atribui ar fi testare_sserial_key deoarece acesta
+este efectiv scopul ei . In cadrul acestei funcctii mai intai se afiseaza 
+la ecran un mesaj prin care utilizatorul este rugat sa introduca un serial valid
+dupa care acesta este citit , operatiile enuntate mai sus sunt realizate cu 
+ajutorul unor functii deja implementate in C.Dupa care , este apelata o functie
+care reprezinta testarea propriu-zisa. Aceasta functie apelata returneaza 0 sau 1
+un fel de true si false prin care se verifica daca serialul este valid 
+daca este valid adica este 1 atunci se afiseaza la ecran Correct altfel
+se afiseaza la ecran "Try Again". si se iese din functie. Functia curenta
+nu returneaza nimic.Daca nu se introduce un serial corect se sare din nou la meniu 
+pentru ca utilizatorul sa isi poate alege o noua optiune ( acelasi lucru se intampla
+si daca se introduce un serial valid).
+
+
+Functia 08048A5D : Aceasta este functia in care se face testarea caracter 
+cu caracter al sirului introdus , al serialului , apelanda la randul sau alte
+mici functii auxiliare , sau macrouri ce vor fi descrise dupa aceasta. Functia are 
+un singur parametru ce reprezinta adresa unde este stocata sirul ce trebuie
+testat sa vedem daca este valid . Aceasta functie returneaza un "intreg" dar
+pe care eu l as numi boolean , deoare acest intreg este 0 daca am gasit
+un serial valid si 0 daca nu . As denumi aceasta functie test_the_serial.
+Ca principiu se citesc cate un caracter sau mai multe depinde de modul de testare
+si se apeleaza functiile propriuzise , Functiile apelate , daca caracterul nu
+indeplineste conditia necesara modifica valorea lui eax. Semn ca nu este bun
+serialul , dar nu intrerurpe testarea celorlalte caractere. Este apelata o functie
+care verifica in functie de valoarea caracterului ascii, ce trebuie sa se 
+incadreze intr-un anumit interval. De asmenea , un alt mod de testare
+a unor varactere din serial, este acela de a citi 3 caractere consecutive
+si se face suma lor ( 2 cate doua ). Si se testeaza sa se verifice daca
+ele adunate dau cat trebuie . De asemenea efectueaza operatia de xor
+pentru jumatatea de octet superioara , si pe jumatatea de octet inferioara
+a unor caractere( se obtine fiecare jumatate shiftand la dreapta
+sau la stanga acel caracter cu 4). In final testarea ultimului caracter
+implica si testarea tuturor celorlalte caractere : Se parcurge sirul din nou de 
+la capat se face suma tuturor caracterelor , si daca aceasta este conforma cu 
+rezultatul eax ramane neschimbat , daca nu este egala atunci eax, se va
+modifica in 0 ( de asemenea intr-o functie) . Odata efectuate toate
+mini-testele se paraseste functia.
+
+
+Functia 08048A20: Aceasta functie are rolul de a initializa cu 0 registrii
+ecx, edx, esi si ah. Nu are niciun parametru nu are niciun tip de return . As numi-o Clean The Registesrs. Desi ea este apelata ca functie as dori sa 
+precizez faptul ca atunci cand sunt in gdb pe instructiunea aceasta si
+dau comanda nexti ar trebui sa nu intre in ea si sa sara la urmatoarea instructiune.
+
+Functia 08048A52: Aceastta functia are un singur parametru si anume 
+registrul EFLAGS. Si se testeaza daca zero flag este 1 sau 0 . Daca acesta 
+nu este 0 , ( semn ca ultimele 2 elemente comparate cu cmp nu sunt egale) , atunci
+eax se modifica la 0 ( practic functia ce apeleaza aceasta functia sigur va 
+intoarce valoarea 0 --- prin urmare serial invalid).
+
+
+Functia 08048A29: aceasta functia are un singur parametru , dar care 
+nu este transmis cu ajutorul stivei , cum au fost toti ceilalti parametri
+pe care i-am prezentat anteriori ci este transmis cu ajutorul registrului dl.
+este o valoarea pe un octet , mai precis un caracter ascii. Acest 
+caracter ascii trebuie sa aiba valoarea cuprinsa intre 30 si 39 in hexa, adica sa fie 
+o cifra de la 0 la 9 sau sa aibe o valoarea intre 39 si 66. Care cel mai probabil
+va fi un caracter litera mica. Daca nu se afla in intervalul corespunzator 
+atunci se modifica eax, semn ca serialul nu este valid, daca se afla
+atunci se vor scadea din acel element o anumita valoarea in funtie de intervalul in care se afla. Nu returneaza nimic functia , dar se modifica 
+in place valoarea parametrului.As numi aceasta functie Verifica_Interval.
+
+
+
+
+------------------_MODIFIC LA FAZA CU SCANF
+OPTIUNEA 1 va genera apelul acestei functii
+Functia 080486EA: Aceasta functie nu are parametri. Se aloca un buffer 
+de 20 octeti pe stiva in cadrul acestei functii, practic o variabila locala
+. Nu returneaza nimic , as numi-o Salveaza_temporar_username-ul.Initial se afiseaz mesajul prin care este rugat utilizatorul sa introduca 
+username ul dorit, iar mai apoi se citeste username ul introdus.
+Locul unde este salvat acest username este pe stiva 
+incepand cu adresa de start a proaspatului buffer alocat.Se poate face buffer
+overflow folosind acest buffer . Primul lucru care este suprascris fiind 
+adresa vechiul
+ui ebp , urmata de adresa de retur plus alte valori/variabile
+din stackframe
+
+OPTIUNEA 2
+Functia 08048710: Aceasta functie nu are parametru si este foarte
+asemanatoare cu cea descrisa mai sus. De asemenea nu are niciun
+parametru si nu returneaza nimic. As denumi aceasta functie Salveaza
+Temporar Adresa . De aceasta data valoarea care se aloca
+pe stiva este de 16 octeti. Iar argumentul care este dat functiei
+printf este "%20s" care are trebui sa limiteze citirea la maximum 20 de caractere . Chiar si asa daca aceasta citire este limitata tot este 
+posibila suprascrierea vechiului ebp. Astfel daca programul nu va c
+
+
+--Mai scriu cand fac ex 3
+OPTIUNEA 3
+Functia 08048736: Aceasta functie nu are niciun parametru. Aloca o singura 
+variabila locala de 4 octeti si nu are niciun tip de return. In cadrul acestei
+functii este apelata functia din libraria C read , care are 3 parametri . 
+Utilizarea acestei functii constituie o vulnerabilitate de tip bufferoverflow 
+ce poate fi exploatata.Functia read care asjuta la citire primeste ca parametru
+24 , cu alte cuvinte poate citi maxim 24 de caractere.Cu alte cuvinte
+putem suprascrie variabila alocata pe stiva, plus alte 5 adrese printre
+care impliciti vechiul ebp , adresa de return ( cea mai importanta) plus 
+alte adrese ce vor fi folositoare in functiile ce urmeaza a fi apelate.Aceasta
+parte tine mai mmult de exercitiul 3. 
+
+
+OPTIUNEA 4
+Functia 0804874E: Aceasta functie trebuie "analizat" pentru a gasi vulnerabilitatile
+si pentru a trece de toate "obstacolele pentru a ajunge la win.Pentru inceput
+se verifica daca Cele 3 variabile stocate in zona de date dword_804A298
+si celelalte 2 . Initial acestea au valoarea 1 , pentru a trece
+mai departe si a citi cele 400 de caractere si de a le pune in bufferul
+alocat pe stiva trebuie ca toate cele 3 variabile sa fie 0.Daca cel
+putin una dintre ele se paraseste functia si se afiseaza un mesaj corespunzator
+DAca nu se trece mai departe si se citesc cele 1024 de caractere, si se pun
+intr-un buffer alocat pe stiva .Functia nu are niciun parametru. Su as denumi-o Verify_the_magic _string.De 
+asemenea dupa citire mai sunt apelate 2 functii ,una 
+din ele avand rol de "securitate" , verifica o 
+anumita proprietata a sirului introdus.Apoi se sare la un label
+unde se verifica daca primele caractere din sir Se afla
+substring-ul Vladut , daca nu se va afisa un mesaj corespunzator
+daca da , se merge mai departe si se verifica daca exista in substring numele Jorascu ( daca nu se paraseste
+functia). Daca utilizatorul reuseste sa treaca
+cu sirul lui de aceste breste de securitate , urmatorul 
+obstacol este apelul unei functii a carei adrese nu o cunoastem
+si nu o putem inspecta static ( cu ida dar ii putem afla continutul la analiza dinamica).Dupa ce se paraseste aceasta functie anonima se paraseste si functia curenta. Din acest fapt putrem trage concluzia
+ca in interiorul acelei functii atacatorul trebuie
+sa sara intr-un fel la adresa functiei care afiseaza 
+mesajul Win asa cum se doreste la cerinta 3.
+
+
+Functia 080485EB: Aceasta functie are un singur parametru
+adresa de inceput a unui sir . As denumi aceasta procedura Testeaza_suma.Functia are 2 variabile locale
+una in care se retine suma iar celalta joaca rolul unui indice , prin care se verifica daca mai sunt "elemente" 
+de adaugat la suma. Numarul de elemente este 400 , iar suma
+trebuie sa fie egala cu 12345 in hexazecimal. Cel care apeleaza functia
+curenta va sti daca sirul pe care l a trimis ca parametru are suma data
+testand valoare registrului eax. Daca suma este fix 12345 atunci al este 1. ( respectiv eax)
+
+
+Functia 0804882B: In cadrul acestei functii se apeleaza functiia de puts
+pentru a afisa mesajul Win, functia pe care trebuie sa o apelama , la 
+exercitiul 3.Functia Nu are parametri , si nu returneaza nimic.Inainte de a se afisa acest mesaj trebuie indeplinita urmatoarea
+conditie : produsul dintre  45D9F3Ah si o alta valoare care este calculata
+in interiorul functiei , trebuie sa se gaseasca si la adresa variabilei 804A2A4, care initial a fost initializata cu valoarea 1
+si ar trebui modificata pe parcursul executiei programului. Daca aceasta
+conditie este indeplinita , se apeleaza mesajul si sa paraseste functia.
+
+ 
+
+
+
+Task 2 + Task 3
+1. Prima vulnerabilitate de tipul buffer overflow descoperita este cea 
+din functia 8048710(optiunea 2) , in care se citese un username de la tastatura
+de maxim 20 de caractere . Iar bufferul alocat este de 16. Insa din pacate
+nu putem suprascrie in acest caz decat adresa unde este stocata valoarea
+vechiului ebp. De asemenea daca trimitem un sir de caractere de 20(bufer+adresa ebp)
+plus o alta adresa sau alte caractere programul va da segmentation fault.
+
+2.O functie in care se poate face bufferOverflow si putem obtine si
+"profit" din acest buffer overflow este cea de la adresa 8048736 , cea
+in care se intra daca utilizatorul alege optiunea 3. Aceasta functia
+citeste de la tastatura un sir de maxim 24 de caractere , cu ajutorul
+functiie fread. In ea , sunt alocati pentru buffer doar 4 octeti, deci
+putem suprascrie adresa vechiului ebp, adresa de reeturn plus alti
+12 octeti ( care pot fi parametri pentru o viitoare functie apelata
+sau alte adrese in care ar trebui sa se sara pe parcursul executiei
+programului).
+
+
+
+
+
+
+
+

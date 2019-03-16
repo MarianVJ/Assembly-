@@ -1,0 +1,102 @@
+				README TEMA 2 IOCLA
+					Jorascu Marian VLadut 325CD
+
+Inainte de prezentarea fiecarui task in parte voi prezenta modul
+de implementare a unei functii numita calculate_next_adress.
+
+Functia calculate_next_adress are un singur parametru ce reprezinta adresa de 
+inceput a unui sir de biti si are ca scop calcularea adresei urmatoare
+Adresa urmaatoarei functii(valoare de return ) este stocata de fiecare 
+data in eax. De asemenea , majoritatea adreselor sirurilor in main sunt
+stocat in registrul eax. Functia noastra se foloseste de operatii pe stringuri
+si anume de operatia scasb , pana la intalnirea null-terminatorului.
+
+Task1
+Se dau 2 adrese de siruri si eu trebuie sa decodez sirul facand xor intre 
+aceste doua siruri pentru a decoda primul mesaj . Cand apelez metoda 
+xor_strings, la revenirea din apel , restaurez stiva folosind pop-uri
+totodata ma asigur ca voi avea stocate adresele tot in aceleasi registre( eax 
+si ebx ) pentru acest subpunct. Similar procedez atunci cand epelez orice
+functie din C sau definita de mine .Functia xor_strings Parcurge cele 2 siruri
+octet cu octet pana la final si face xor intre cei doi octeti si 
+scrie caracterul decodat pe pozitia corespunzatoare din sirul criptat. 
+
+Task2
+La acest task metoda de decriptare este similara cu metoda de criptare
+adica pentru fiecare caracter cn  ii fac xor cu cu cn-1 . Desigur 
+cn-1 la pasul cn nu va fi acelasi cu cn-1 la pasul cn-1( eu am nevoie
+cu alte cuvinte de caracterul criptat de la acel pas nu de cel 
+decriptat) , de aceea ii realizez de fiecare data o copie
+pentru a ma folosi de el la pasul urmator.
+
+Task3
+La acest task sirul decriptat este de doua ori mai scurt decat
+sirul criptat. Scrierea se realizeaza de la inceputul sirului 
+criptat.Functia mea ia pe rand 2 octeti din cheie si 2 octeti din 
+sir si realizeaza pentru inceput acualizarea
+valorilor din ascii in decimal. De ce doi octeti deoarece
+2 octeti din acest string hexa pot fi stocati pe un octet in decimal.
+De fiecare data apelez metoda convert_from_hex.  Care primeste ca parametru
+o valoare pe 4 octeti, ce este salvata in edx. Unde in dh este 
+cel mai semnificativ octet din "numarul hexa". Aceasta nu realizeaza efectiv
+Decriptarea, doar inlocuieste caractererele ascii cu valoarea numerica corespun
+zatoare . Daca are "1" ( 51), pune 1 in registrul coresp(dh , dl)
+,(daca are a pune 10). Conversia 
+se executa in functia xor_on_Strings. bh*16+bl. Odata convertit facem xor intre 
+octetul cheii si octetul sirului si il scriem pe pozitia potrivita.
+
+
+Task4
+Pentru inceput in functia imi aloc pe stiva 32 de octeti pentru a stoca
+acea tabela ( A-0, B-1.....7-31). Dupa care citesc octet cu octet din sir
+un caracter ASCII mare(A B C D ), caut in tabela prezentat mai sus
+valoarea pentru caracter in mod progrmatic. Dupa care odata gasita valoarea
+trebuie doar sa ii realizez conversia in baza 2( DETALII PAS CU PAS IN 
+FISIER SURSA). Ceea ce fac la acest task este urmatorul lucru: pentru fiecare
+octet aloc pe stiva cate 5 octeti , deoarece fiecare cod al unui caracter
+este maxim 32 si poate fi reprezentat in baza 2 pe 5 biti. Decodam caacter
+cu caracter si punem in ordinea corespunzatoare reprezentarea lor in baza 2
+astfel incat la scriere sa nu sar dintr o zona de memorie in alta
+si sa iau cate 8 biti pe rand dupa care sa ii convertesc in baza 10.
+Odata scris tot sirul in baza 2 . Realizez scrierea
+(simulan cu conversia din 2 in 10) pana intalnesc 
+null terminatorul.
+
+Task5
+Functia noastra procedeaza astfel : Iau fiecare cheie de la 0 la 255 
+din 1 in 1 . Si verific pe sirul nostru daca folosnind cheia de la pasul
+curent se poate gasi substringul "student". Daca l am gasit atunci cheia a fost
+determinata si parasesc functia. Rezultatul (cheia) este retinuta la iesirea
+din functie in registrul ebx.
+Odata determinata cheia parcurg cctet cu octet si fax xor intre sirul 
+nostru si cheie si modific in acelasi loc mesajul cu caracterul gasit.
+
+
+Task6
+Pentru rezolvarea acestui task a fost nevoie de 2 functii una cu ajutorul
+careia sa construim tabela de corespundenta dintre alfabetul original
+si alfabetul cu care am facut criptare, si alta cu care am decodificat
+propriuzis mesajul. Voi descrie in cele ce urmeaza modul cum am determinat
+eu aceasta tabela de corespundenta. Pentru inceput
+am calculat in mod programatic numarul de aparitii in sir a fiecarui caracter
+Dupa care, am aflat aceste frecvente intr o bucla ("for") si m am uitat cu
+debuggerul. Am pus intr un document excel aceasta corespondenta pentru a avea
+ostatisstica despre acestea.Dupa care am facut substituirea fiecarui caracter 
+cu "-". Si pe rand am inlocuit cate 3 4 caractere in functie de indiciile 
+obtinute. Inainte de a incepe sa inlocuiesc caractere  am luat un text in limba
+engleza de 3500 de cuvinte si am vazut care caracter apare de cele mai
+multe ori , si am observat ca acestea este caracterul SPACE, asa ca am dedus
+ca si in sirul meu caracterul cu cea mai mare frecventa (C (309)in sirul
+criptat) este space in sirul decriptat . Dupa care urmatoarele 3 caractere
+cu apariti foarte mari au fost inlocuite cu e , t si a in aceasta ordine. 
+Odata facuti acesti pasi am Putut remarca cuvinte precum "text". Stiind sa 
+inlocuiesc x ul sau that , inlocuind h ul . Si cu fiecare 2  3 caractere
+inlocuite se formeau alte cuvinte aproape complete si astfel am determinat
+tabela de substitutie. Odata creeata tabela , decriptarea s-a realizat in 
+felul urmator , iau octet cu octet din sirul criptat, si iterez pentru
+fiecare in tabela de substituie pentru a determina ce caracter din alfabetul
+original a fost inlocuit cu cel de la pasul curent , si actualizez in 
+conformitate pe pozitia corespunzatoare. 
+
+PS:
+Mi-a placut aceasta tema , chiar a fost interesanta !!!
